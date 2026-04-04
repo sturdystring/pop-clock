@@ -1,0 +1,33 @@
+# ==================== STM32CubeIDE / Eclipse ====================
+.metadata/
+.settings/
+.cproject
+.project
+*.launch
+*.bak
+*.tmp
+*.swp
+*~
+
+# ==================== Build artifacts ====================
+Debug/
+debug/
+Release/
+release/
+
+# ==================== Object files and binaries ====================
+*.o
+*.obj
+*.elf
+*.hex
+*.bin
+*.map
+*.lst
+*.su
+*.d
+
+# ==================== Temporary and log files ====================
+*.log
+*.tmp
+*.cache
+*.bak
