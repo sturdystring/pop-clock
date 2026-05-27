@@ -28,10 +28,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
- C:/Users/Root/Downloads/ST7789-STM32-master/ST7789/st7789.c \
- C:/Users/Root/Downloads/ST7789-STM32-master/ST7789/st7789.h \
- C:/Users/Root/Downloads/ST7789-STM32-master/ST7789/fonts.h \
- C:/Users/Root/Downloads/ST7789-STM32-master/ST7789/fonts.c
+ ../Core/Inc/st7789.h ../Core/Inc/st7789_conf.h ../Core/Inc/main.h \
+ ../Core/Inc/st7789_font.h ../Core/Inc/st7789.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
 ../Core/Inc/stm32f1xx_hal_conf.h:
@@ -62,7 +60,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h:
-C:/Users/Root/Downloads/ST7789-STM32-master/ST7789/st7789.c:
-C:/Users/Root/Downloads/ST7789-STM32-master/ST7789/st7789.h:
-C:/Users/Root/Downloads/ST7789-STM32-master/ST7789/fonts.h:
-C:/Users/Root/Downloads/ST7789-STM32-master/ST7789/fonts.c:
+../Core/Inc/st7789.h:
+../Core/Inc/st7789_conf.h:
+../Core/Inc/main.h:
+../Core/Inc/st7789_font.h:
+../Core/Inc/st7789.h:

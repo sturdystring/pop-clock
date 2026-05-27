@@ -21,8 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "st7789.c"
-#include "fonts.c"
+#include "st7789.h"
+#include "st7789_font.h"
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -135,7 +135,7 @@ uint32_t time_was;
 uint8_t select_color_back=1;
 uint8_t color_back_red = 0x1F, color_back_green = 0x3F, color_back_blue = 0x1F,
 		color_text_red, color_text_green, color_text_blue;
-uint16_t color_back=WHITE, color_back_now = WHITE, color_text = BLACK, color_text_prev;
+uint16_t color_back=ST7789_COLOR_WHITE, color_back_now =ST7789_COLOR_WHITE, color_text = ST7789_COLOR_BLACK, color_text_prev;
 
 
 uint8_t auto_switch_off=1;
@@ -158,7 +158,6 @@ uint8_t number_fraze;
 
 
 uint8_t auto_change=1;
-
 
 
 /* USER CODE END PV */
@@ -244,7 +243,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_ADCEx_Calibration_Start(&hadc1);
   for(uint8_t i=0;i<=1;i++)ST7789_Init();
-  ST7789_Fill_Color(color_back_now);
+  ST7789_FillScreen(color_back_now);
   ST7789_DrawRectangle(290, 10, 310, 50, color_text);
   ST7789_DrawFilledRectangle(295, 5, 11, 6, color_text);
   HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
@@ -973,19 +972,19 @@ void WriteToDisplay(uint8_t hour, uint8_t minutes, uint8_t seconds, uint8_t day,
 
 
 		sprintf(buf,"%02li дн",days_to_meet);
-		ST7789_WriteString(5, 5, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 5, buf, Font_16x26, color_text, color_back_now);
 
 
 		sprintf(buf,"%02li ч",hour_to_meet);
-		ST7789_WriteString(5, 31, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 31, buf, Font_16x26, color_text, color_back_now);
 
 
 		sprintf(buf,"%02li мин",minutes_to_meet);
-		ST7789_WriteString(5, 57, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 57, buf, Font_16x26, color_text, color_back_now);
 
 
 		sprintf(buf,"%02li сек до встречи",seconds_to_meet);
-		ST7789_WriteString(5, 83, buf, Font_16x26, color_text, color_back_now);*/
+		ST7789_PutString(5, 83, buf, Font_16x26, color_text, color_back_now);*/
 		if(hou_past==hour && min_past == minutes && auto_change==1)
 		{
 		ST7789_DrawFilledRectangle(5, 5, 285, 95, color_back_now);
@@ -1012,87 +1011,86 @@ void WriteToDisplay(uint8_t hour, uint8_t minutes, uint8_t seconds, uint8_t day,
 		}
 		if ((Dat==1 && Mou==1) || (Dat == 31 && Mou ==12))
 		{
-			ST7789_WriteString_ramk(5, 5, 290, 240, "С новым годом! С новым счастьем!",
-								Font_16x26, color_text, color_back_now);
+			ST7789_PutString_Ramk(5, 5, 290, 240, "С новым годом! С новым счастьем!",Font_16x26, color_text, color_back_now);
 		}
 		else if (Dat==13 && Mou == 7)
 		{
-			ST7789_WriteString_ramk(5, 5, 290, 240, "С днем рождения  моя красотка!    Счастья, здоровьяи любви от меня!",
+			ST7789_PutString_Ramk(5, 5, 290, 240, "С днем рождения  моя красотка!    Счастья, здоровьяи любви от меня!",
 											Font_16x26, color_text, color_back_now);
 		}
 		else if (Dat==16 && Mou==2)
 		{
-			ST7789_WriteString_ramk(5, 5, 290, 240, "С нашим праздни- ком, очень тебя  люблю и целую!",
+			ST7789_PutString_Ramk(5, 5, 290, 240, "С нашим праздни- ком, очень тебя  люблю и целую!",
 														Font_16x26, color_text, color_back_now);
 		}
 		else
 		{
 		switch (number_fraze) {
 		case 0:
-			ST7789_WriteString_ramk(5, 5, 290, 240, "Ты моя любимая   девочка",
+			ST7789_PutString_Ramk(5, 5, 290, 240, "Ты моя любимая   девочка",
 					Font_16x26, color_text, color_back_now);
 			break;
 		case 1:
-			ST7789_WriteString_ramk(5, 5, 290, 240,
+			ST7789_PutString_Ramk(5, 5, 290, 240,
 					"Ты самая лучшая вэтой вселенной", Font_16x26, color_text,
 					color_back_now);
 			break;
 		case 2:
-			ST7789_WriteString_ramk(5, 5, 290, 240,
+			ST7789_PutString_Ramk(5, 5, 290, 240,
 					"Ты богиня, спус- тившаяся с небес", Font_16x26, color_text,
 					color_back_now);
 			break;
 		case 3:
-			ST7789_WriteString_ramk(5, 5, 290, 240,
+			ST7789_PutString_Ramk(5, 5, 290, 240,
 					"Ты самая красиваядевочка в этом   мире", Font_16x26, color_text,
 					color_back_now);
 			break;
 		case 4:
-			ST7789_WriteString_ramk(5, 5, 290, 240,
+			ST7789_PutString_Ramk(5, 5, 290, 240,
 					"Ты лучшее, что сомной случалось", Font_16x26, color_text,
 					color_back_now);
 			break;
 		case 5:
-			ST7789_WriteString_ramk(5, 5, 290, 240,
+			ST7789_PutString_Ramk(5, 5, 290, 240,
 					"Твоя красота     покоряет мое     сердце", Font_16x26, color_text,
 					color_back_now);
 			break;
 		case 6:
-			ST7789_WriteString_ramk(5, 5, 290, 240,
+			ST7789_PutString_Ramk(5, 5, 290, 240,
 					"Моя любовь к тебене знает границ", Font_16x26, color_text,
 					color_back_now);
 			break;
 		case 7:
-			ST7789_WriteString_ramk(5, 5, 290, 240, "Not fake, true   love",
+			ST7789_PutString_Ramk(5, 5, 290, 240, "Not fake, true   love",
 					Font_16x26, color_text, color_back_now);
 			break;
 		case 8:
-			ST7789_WriteString_ramk(5, 5, 290, 240, "Горжусь тобой", Font_16x26,
+			ST7789_PutString_Ramk(5, 5, 290, 240, "Горжусь тобой", Font_16x26,
 					color_text, color_back_now);
 			break;
 		case 9:
-			ST7789_WriteString_ramk(5, 5, 290, 240, "Ти самая умничка",
+			ST7789_PutString_Ramk(5, 5, 290, 240, "Ти самая умничка",
 					Font_16x26, color_text, color_back_now);
 			break;
 		case 10:
-			ST7789_WriteString_ramk(5, 5, 290, 240,
+			ST7789_PutString_Ramk(5, 5, 290, 240,
 					"Очень тебя люблю и очень скучаю", Font_16x26, color_text,
 					color_back_now);
 			break;
 		case 11:
-			ST7789_WriteString_ramk(5, 5, 290, 240, "Приезжай скорее",
+			ST7789_PutString_Ramk(5, 5, 290, 240, "Приезжай скорее",
 					Font_16x26, color_text, color_back_now);
 			break;
 		case 12:
-			ST7789_WriteString_ramk(5, 5, 290, 240, "Ты лучше всех,   никого не слушай",
+			ST7789_PutString_Ramk(5, 5, 290, 240, "Ты лучше всех,   никого не слушай",
 					Font_16x26, color_text, color_back_now);
 			break;
 		case 13:
-			ST7789_WriteString_ramk(5, 5, 290, 240, "Красивая как     ангел", Font_16x26,
+			ST7789_PutString_Ramk(5, 5, 290, 240, "Красивая как     ангел", Font_16x26,
 					color_text, color_back_now);
 			break;
 		case 14:
-			ST7789_WriteString_ramk(5, 5, 290, 240, "Очень скучаю, мойкотик",
+			ST7789_PutString_Ramk(5, 5, 290, 240, "Очень скучаю, мойкотик",
 					Font_16x26, color_text, color_back_now);
 			break;
 		}
@@ -1120,7 +1118,7 @@ void WriteToDisplay(uint8_t hour, uint8_t minutes, uint8_t seconds, uint8_t day,
 			} else if (bat_state == 0) {
 				ST7789_DrawFilledRectangle(292, 12, 17, 11, color_back_now);
 				ST7789_DrawFilledRectangle(292, 25, 17, 11, color_back_now);
-				ST7789_DrawFilledRectangle(292, 38, 17, 11, RED);
+				ST7789_DrawFilledRectangle(292, 38, 17, 11, ST7789_COLOR_RED);
 			}
 			break;
 		case 0:
@@ -1177,31 +1175,31 @@ void WriteToDisplay(uint8_t hour, uint8_t minutes, uint8_t seconds, uint8_t day,
 		if(count>5) count=0;
 		switch (weekday) {
 		case 0:
-			ST7789_WriteString(250, 110, "Вс", Font_16x26, color_text, color_back_now);
+			ST7789_PutString(250, 110, "Вс", Font_16x26, color_text, color_back_now);
 			break;
 		case 1:
-			ST7789_WriteString(250, 110, "Пн", Font_16x26, color_text, color_back_now);
+			ST7789_PutString(250, 110, "Пн", Font_16x26, color_text, color_back_now);
 			break;
 		case 2:
-			ST7789_WriteString(250, 110, "Вт", Font_16x26, color_text, color_back_now);
+			ST7789_PutString(250, 110, "Вт", Font_16x26, color_text, color_back_now);
 			break;
 		case 3:
-			ST7789_WriteString(250, 110, "Ср", Font_16x26, color_text, color_back_now);
+			ST7789_PutString(250, 110, "Ср", Font_16x26, color_text, color_back_now);
 			break;
 		case 4:
-			ST7789_WriteString(250, 110, "Чт", Font_16x26, color_text, color_back_now);
+			ST7789_PutString(250, 110, "Чт", Font_16x26, color_text, color_back_now);
 			break;
 		case 5:
-			ST7789_WriteString(250, 110, "Пт", Font_16x26, color_text, color_back_now);
+			ST7789_PutString(250, 110, "Пт", Font_16x26, color_text, color_back_now);
 			break;
 		case 6:
-			ST7789_WriteString(250, 110, "Сб", Font_16x26, color_text, color_back_now);
+			ST7789_PutString(250, 110, "Сб", Font_16x26, color_text, color_back_now);
 			break;
 		}
 		sprintf(buf, "%02i:%02i:%02i", hour, minutes, seconds);
-		ST7789_WriteString(80, 110, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(80, 110, buf, Font_16x26, color_text, color_back_now);
 		sprintf(buf, "%02i.%02i.20%02i", day, mounth, year);
-		ST7789_WriteString(80, 140, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(80, 140, buf, Font_16x26, color_text, color_back_now);
 		sprintf(buf, "%.1fC %.0f%%", Temp, Hum);
 		static uint8_t buf_size_past = 0xFF;
 		uint8_t buf_size_now = strlen(buf);
@@ -1210,125 +1208,126 @@ void WriteToDisplay(uint8_t hour, uint8_t minutes, uint8_t seconds, uint8_t day,
 			buf_size_past = buf_size_now;
 		}
 		else buf_size_past = buf_size_now;
-		ST7789_WriteString(150, 200, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(150, 200, buf, Font_16x26, color_text, color_back_now);
 		break;
 	case STATE_MENU:
-		ST7789_WriteString(5, 5, "Время", Font_16x26, color_text, color_back_now);
-		ST7789_WriteString(5, 35, "Дата", Font_16x26, color_text, color_back_now);
-		ST7789_WriteString(5, 65, "Будильник", Font_16x26, color_text, color_back_now);
-		ST7789_WriteString(5, 95, "Цвет фона", Font_16x26, color_text, color_back_now);
-		ST7789_WriteString(5, 125, "Яркость", Font_16x26, color_text, color_back_now);
-		ST7789_WriteString(5, 155, "Авт. выкл", Font_16x26, color_text, color_back_now);
-		ST7789_WriteString(5, 185, "Выбор фразы", Font_16x26, color_text, color_back_now);
-		ST7789_WriteString(5, 215, "Сервис", Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 5, "Время", Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 35, "Дата", Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 65, "Будильник", Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 95, "Цвет фона", Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 125, "Яркость", Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 155, "Авт. выкл", Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 185, "Выбор фразы", Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 213, "Сервис", Font_16x26, color_text, color_back_now);
 		static uint8_t menu_index_past;
 		if(menu_index!=menu_index_past)
 		{
 			ST7789_DrawFilledRectangle(250, 5, 16*2, 240-6, color_back_now);
 			menu_index_past=menu_index;
 		}
-		ST7789_WriteString(250, 5+(30*menu_index), "<-", Font_16x26, color_text, color_back_now);
+		if(menu_index == 7) ST7789_PutString(250, 213, "<-", Font_16x26, color_text, color_back_now);
+		else ST7789_PutString(250, 5+(30*menu_index), "<-", Font_16x26, color_text, color_back_now);
 		break;
 	case STATE_MENU_ITEM_Time:
-		ST7789_WriteString(5, 5, "Время", Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 5, "Время", Font_16x26, color_text, color_back_now);
 		sprintf(buf,"Часы: %02i",hou_set);
-		ST7789_WriteString(5, 50, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 50, buf, Font_16x26, color_text, color_back_now);
 		sprintf(buf,"Минуты: %02i",min_set);
-		ST7789_WriteString(5, 100, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 100, buf, Font_16x26, color_text, color_back_now);
 		sprintf(buf,"Секунды: %02i",sec_set);
-		ST7789_WriteString(5, 150, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 150, buf, Font_16x26, color_text, color_back_now);
 		if(menu_index!=menu_index_past)
 				{
 					ST7789_DrawFilledRectangle(250, 5, 16*2, 240-11, color_back_now);
 					menu_index_past=menu_index;
 				}
-				ST7789_WriteString(250, 50+(50*menu_index), "<-", Font_16x26, color_text, color_back_now);
+				ST7789_PutString(250, 50+(50*menu_index), "<-", Font_16x26, color_text, color_back_now);
 		break;
 	case STATE_MENU_ITEM_Date:
-		ST7789_WriteString(5, 5, "Дата", Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 5, "Дата", Font_16x26, color_text, color_back_now);
 		sprintf(buf, "Число: %02i", dat_set);
-		ST7789_WriteString(5, 50, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 50, buf, Font_16x26, color_text, color_back_now);
 		//sprintf(buf, "День недели: %01i", weekday_set);
-		ST7789_WriteString(5, 100, "День недели:", Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 100, "День недели:", Font_16x26, color_text, color_back_now);
 		switch (weekday_set) {
 				case 0:
-					ST7789_WriteString(213, 100, "Вс", Font_16x26, color_text, color_back_now);
+					ST7789_PutString(213, 100, "Вс", Font_16x26, color_text, color_back_now);
 					break;
 				case 1:
-					ST7789_WriteString(213, 100, "Пн", Font_16x26, color_text, color_back_now);
+					ST7789_PutString(213, 100, "Пн", Font_16x26, color_text, color_back_now);
 					break;
 				case 2:
-					ST7789_WriteString(213, 100, "Вт", Font_16x26, color_text, color_back_now);
+					ST7789_PutString(213, 100, "Вт", Font_16x26, color_text, color_back_now);
 					break;
 				case 3:
-					ST7789_WriteString(213, 100, "Ср", Font_16x26, color_text, color_back_now);
+					ST7789_PutString(213, 100, "Ср", Font_16x26, color_text, color_back_now);
 					break;
 				case 4:
-					ST7789_WriteString(213, 100, "Чт", Font_16x26, color_text, color_back_now);
+					ST7789_PutString(213, 100, "Чт", Font_16x26, color_text, color_back_now);
 					break;
 				case 5:
-					ST7789_WriteString(213, 100, "Пт", Font_16x26, color_text, color_back_now);
+					ST7789_PutString(213, 100, "Пт", Font_16x26, color_text, color_back_now);
 					break;
 				case 6:
-					ST7789_WriteString(213, 100, "Сб", Font_16x26, color_text, color_back_now);
+					ST7789_PutString(213, 100, "Сб", Font_16x26, color_text, color_back_now);
 					break;
 				}
 		sprintf(buf, "Месяц: %02i", mou_set);
-		ST7789_WriteString(5, 150, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 150, buf, Font_16x26, color_text, color_back_now);
 		sprintf(buf, "Год: %02i", year_set);
-		ST7789_WriteString(5, 2000, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 2000, buf, Font_16x26, color_text, color_back_now);
 		if (menu_index != menu_index_past) {
 			ST7789_DrawFilledRectangle(250, 5, 16 * 2, 240 - 11, color_back_now);
 			menu_index_past = menu_index;
 		}
-		ST7789_WriteString(250, 50 + (50 * menu_index), "<-", Font_16x26, color_text,
+		ST7789_PutString(250, 50 + (50 * menu_index), "<-", Font_16x26, color_text,
 				color_back_now);
 		break;
 	case STATE_MENU_ITEM_Alarm:
-		ST7789_WriteString(5, 5, "Будильник", Font_16x26, color_text,
+		ST7789_PutString(5, 5, "Будильник", Font_16x26, color_text,
 				color_back_now);
-		if(alarm_set==1) ST7789_WriteString(5, 50, "Будильник вкл ", Font_16x26, color_text,
+		if(alarm_set==1) ST7789_PutString(5, 50, "Будильник вкл ", Font_16x26, color_text,
 				color_back_now);
-		else ST7789_WriteString(5, 50, "Будильник выкл", Font_16x26, color_text,
+		else ST7789_PutString(5, 50, "Будильник выкл", Font_16x26, color_text,
 				color_back_now);
 		sprintf(buf, "Часы: %02i", hou_set_alarm);
-		ST7789_WriteString(5, 100, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 100, buf, Font_16x26, color_text, color_back_now);
 		sprintf(buf, "Минуты: %02i", min_set_alarm);
-		ST7789_WriteString(5, 150, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 150, buf, Font_16x26, color_text, color_back_now);
 		if (menu_index != menu_index_past) {
 			ST7789_DrawFilledRectangle(250, 5, 16 * 2, 240 - 11,
 					color_back_now);
 			menu_index_past = menu_index;
 		}
-		ST7789_WriteString(250, 50 + (50 * menu_index), "<-", Font_16x26, color_text,
+		ST7789_PutString(250, 50 + (50 * menu_index), "<-", Font_16x26, color_text,
 				color_back_now);
 		break;
 	case STATE_MENU_ITEM_Color_Back:
 		if(select_color_back==1)
 		{
-		ST7789_WriteString(5, 5, "Цвет фона  ", Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 5, "Цвет фона  ", Font_16x26, color_text, color_back_now);
 		sprintf(buf, "Красный: %02i", color_back_red);
-		ST7789_WriteString(5, 50, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 50, buf, Font_16x26, color_text, color_back_now);
 		sprintf(buf, "Зеленый: %02i", color_back_green);
-		ST7789_WriteString(5, 100, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 100, buf, Font_16x26, color_text, color_back_now);
 		sprintf(buf, "Синий: %02i", color_back_blue);
-		ST7789_WriteString(5, 150, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 150, buf, Font_16x26, color_text, color_back_now);
 		color_back = (color_back_red<<11) | (color_back_green<<5) | color_back_blue;
 		ST7789_DrawFilledRectangle(5, 180, 200, 50, color_back);
 		}
 		else if(select_color_back==0)
 		{
-			ST7789_WriteString(5, 5, "Цвет текста", Font_16x26, color_text,
+			ST7789_PutString(5, 5, "Цвет текста", Font_16x26, color_text,
 					color_back_now);
 		sprintf(buf, "Красный: %02i", color_text_red);
-		ST7789_WriteString(5, 50, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 50, buf, Font_16x26, color_text, color_back_now);
 		sprintf(buf, "Зеленый: %02i", color_text_green);
-		ST7789_WriteString(5, 100, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 100, buf, Font_16x26, color_text, color_back_now);
 		sprintf(buf, "Синий: %02i", color_text_blue);
-		ST7789_WriteString(5, 150, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 150, buf, Font_16x26, color_text, color_back_now);
 		color_text_prev = (color_text_red << 11) | (color_text_green << 5)
 				| color_text_blue;
-		ST7789_WriteString(5, 200, "Цвет текста", Font_16x26, color_text_prev,
+		ST7789_PutString(5, 200, "Цвет текста", Font_16x26, color_text_prev,
 				color_back);
 		}
 
@@ -1340,13 +1339,13 @@ void WriteToDisplay(uint8_t hour, uint8_t minutes, uint8_t seconds, uint8_t day,
 					color_back_now);
 			menu_index_past = menu_index;
 		}
-		ST7789_WriteString(250, (50 * menu_index), "<-", Font_16x26, color_text,
+		ST7789_PutString(250, (50 * menu_index), "<-", Font_16x26, color_text,
 				color_back_now);
 		break;
 	case STATE_MENU_ITEM_Bright:
-		ST7789_WriteString(5, 5, "Яркость", Font_16x26, color_text, color_back_now);
-		if(auto_bright==0)	ST7789_WriteString(5, 50, "Авт ярк выкл", Font_16x26, color_text, color_back_now);
-		else ST7789_WriteString(5, 50, "Авт ярк вкл ", Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 5, "Яркость", Font_16x26, color_text, color_back_now);
+		if(auto_bright==0)	ST7789_PutString(5, 50, "Авт ярк выкл", Font_16x26, color_text, color_back_now);
+		else ST7789_PutString(5, 50, "Авт ярк вкл ", Font_16x26, color_text, color_back_now);
 		sprintf(buf,"Яркость: %i%%",Bright_set);
 		static uint8_t buf_size_past_bright = 0xFF;
 		uint8_t buf_size_now_bright = strlen(buf);
@@ -1355,7 +1354,7 @@ void WriteToDisplay(uint8_t hour, uint8_t minutes, uint8_t seconds, uint8_t day,
 			buf_size_past_bright = buf_size_now_bright;
 		}
 		else buf_size_past_bright = buf_size_now_bright;
-		ST7789_WriteString(5, 100, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 100, buf, Font_16x26, color_text, color_back_now);
 
 
 
@@ -1365,100 +1364,100 @@ void WriteToDisplay(uint8_t hour, uint8_t minutes, uint8_t seconds, uint8_t day,
 					color_back_now);
 			menu_index_past = menu_index;
 		}
-		ST7789_WriteString(250, 50 + (50 * menu_index), "<-", Font_16x26, color_text,
+		ST7789_PutString(250, 50 + (50 * menu_index), "<-", Font_16x26, color_text,
 				color_back_now);
 		break;
 	case STATE_MENU_ITEM_auto_off:
-		ST7789_WriteString(5, 5, "Авт. выкл", Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 5, "Авт. выкл", Font_16x26, color_text, color_back_now);
 		if(auto_switch_off == 0)
 		{
-			ST7789_WriteString(5, 50, "Авт.выкл-Выкл", Font_16x26, color_text, color_back_now);
+			ST7789_PutString(5, 50, "Авт.выкл-Выкл", Font_16x26, color_text, color_back_now);
 		}
 		else
 		{
-			ST7789_WriteString(5, 50, "Авт.выкл-Вкл ", Font_16x26, color_text, color_back_now);
+			ST7789_PutString(5, 50, "Авт.выкл-Вкл ", Font_16x26, color_text, color_back_now);
 		}
 		sprintf(buf, "Время выкл: %02i", time_to_switch_off);
-		ST7789_WriteString(5, 100, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 100, buf, Font_16x26, color_text, color_back_now);
 		if (menu_index != menu_index_past) {
 					ST7789_DrawFilledRectangle(250, 5, 16 * 2, 240 - 11,
 							color_back_now);
 					menu_index_past = menu_index;
 				}
-				ST7789_WriteString(250, 50 + (50 * menu_index), "<-", Font_16x26, color_text,
+				ST7789_PutString(250, 50 + (50 * menu_index), "<-", Font_16x26, color_text,
 						color_back_now);
 		break;
 	case STATE_MENU_ITEM_fraze_select:
-		ST7789_WriteString(5, 5, "Выбор фразы", Font_16x26, color_text,
+		ST7789_PutString(5, 5, "Выбор фразы", Font_16x26, color_text,
 				color_back_now);
 		sprintf(buf, "Фраза: %02i", number_fraze);
-		ST7789_WriteString(5, 50, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 50, buf, Font_16x26, color_text, color_back_now);
 		switch (number_fraze) {
 		case 0:
-			ST7789_WriteString(5, 50 + 26, "Ты моя любимая де-вочка", Font_16x26,
+			ST7789_PutString(5, 50 + 26, "Ты моя любимая де-вочка", Font_16x26,
 					color_text, color_back_now);
 			break;
 		case 1:
-			ST7789_WriteString(5, 50 + 26, "Ты самая лучшая в этой вселенной",
+			ST7789_PutString(5, 50 + 26, "Ты самая лучшая в этой вселенной",
 					Font_16x26, color_text, color_back_now);
 			break;
 		case 2:
-			ST7789_WriteString(5, 50 + 26, "Ты богиня, спус-  тившаяся с небес",
+			ST7789_PutString(5, 50 + 26, "Ты богиня, спус-  тившаяся с небес",
 					Font_16x26, color_text, color_back_now);
 			break;
 		case 3:
-			ST7789_WriteString(5, 50 + 26,
+			ST7789_PutString(5, 50 + 26,
 					"Ты самая красивая девочка в этом ми-ре", Font_16x26, color_text,
 					color_back_now);
 			break;
 		case 4:
-			ST7789_WriteString(5, 50 + 26, "Ты лучшее, что со мной случалось",
+			ST7789_PutString(5, 50 + 26, "Ты лучшее, что со мной случалось",
 					Font_16x26, color_text, color_back_now);
 			break;
 		case 5:
-			ST7789_WriteString(5, 50 + 26, "Твоя красота поко-ряет мое сердце",
+			ST7789_PutString(5, 50 + 26, "Твоя красота поко-ряет мое сердце",
 					Font_16x26, color_text, color_back_now);
 			break;
 		case 6:
-			ST7789_WriteString(5, 50 + 26, "Моя любовь к тебе не знает границ",
+			ST7789_PutString(5, 50 + 26, "Моя любовь к тебе не знает границ",
 					Font_16x26, color_text, color_back_now);
 			break;
 		case 7:
-			ST7789_WriteString(5, 50 + 26, "Not fake, true lo-ve", Font_16x26,
+			ST7789_PutString(5, 50 + 26, "Not fake, true lo-ve", Font_16x26,
 					color_text, color_back_now);
 			break;
 		case 8:
-			ST7789_WriteString(5, 50 + 26, "Горжусь тобой", Font_16x26,
+			ST7789_PutString(5, 50 + 26, "Горжусь тобой", Font_16x26,
 			color_text, color_back_now);
 			break;
 		case 9:
-			ST7789_WriteString(5, 50 + 26, "Ти самая умничка", Font_16x26,
+			ST7789_PutString(5, 50 + 26, "Ти самая умничка", Font_16x26,
 					color_text, color_back_now);
 			break;
 		case 10:
-			ST7789_WriteString(5, 50 + 26, "Очень тебя люблю иочень скучаю",
+			ST7789_PutString(5, 50 + 26, "Очень тебя люблю иочень скучаю",
 					Font_16x26, color_text, color_back_now);
 			break;
 		case 11:
-			ST7789_WriteString(5, 50 + 26, "Приезжай скорее", Font_16x26, color_text,
+			ST7789_PutString(5, 50 + 26, "Приезжай скорее", Font_16x26, color_text,
 					color_back_now);
 			break;
 		case 12:
-			ST7789_WriteString(5, 50 + 26, "Ты лучше всех, ни-кого не слушай", Font_16x26, color_text,
+			ST7789_PutString(5, 50 + 26, "Ты лучше всех, ни-кого не слушай", Font_16x26, color_text,
 					color_back_now);
 			break;
 		case 13:
-			ST7789_WriteString(5, 50 + 26, "Красивая как ангел", Font_16x26, color_text,
+			ST7789_PutString(5, 50 + 26, "Красивая как ангел", Font_16x26, color_text,
 					color_back_now);
 			break;
 		case 14:
-			ST7789_WriteString(5, 50 + 26, "Очень скучаю, мой котик", Font_16x26, color_text,
+			ST7789_PutString(5, 50 + 26, "Очень скучаю, мой котик", Font_16x26, color_text,
 					color_back_now);
 			break;
 		}
-		if(auto_change==0) ST7789_WriteString(5, 200-26, "Авто смена нет", Font_16x26, color_text,
+		if(auto_change==0) ST7789_PutString(5, 200-26, "Авто смена нет", Font_16x26, color_text,
 				color_back_now);
-		else ST7789_WriteString(5, 200-26, "Авто смена да ", Font_16x26, color_text,
+		else ST7789_PutString(5, 200-26, "Авто смена да ", Font_16x26, color_text,
 				color_back_now);
 		sprintf(buf,"Смена: %i мин",time_change);
 		static uint8_t buf_size_past_fraze = 0xFF;
@@ -1468,33 +1467,33 @@ void WriteToDisplay(uint8_t hour, uint8_t minutes, uint8_t seconds, uint8_t day,
 					buf_size_past_fraze = buf_size_now_fraze;
 				}
 				else buf_size_past_fraze = buf_size_now_fraze;
-		ST7789_WriteString(5, 200,buf, Font_16x26, color_text,
+		ST7789_PutString(5, 200,buf, Font_16x26, color_text,
 						color_back_now);
 		if (menu_index != menu_index_past) {
 					ST7789_DrawFilledRectangle(250, 5, 16 * 2, 240 - 11,
 							color_back_now);
 					menu_index_past = menu_index;
 				}
-				if(menu_index==0) ST7789_WriteString(250, 50, "<-", Font_16x26, color_text,
+				if(menu_index==0) ST7789_PutString(250, 50, "<-", Font_16x26, color_text,
 						color_back_now);
-				else if (menu_index==1) ST7789_WriteString(250, 200-26, "<-", Font_16x26, color_text,
+				else if (menu_index==1) ST7789_PutString(250, 200-26, "<-", Font_16x26, color_text,
 						color_back_now);
-				else if (menu_index==2) ST7789_WriteString(250, 200, "<-", Font_16x26, color_text,
+				else if (menu_index==2) ST7789_PutString(250, 200, "<-", Font_16x26, color_text,
 										color_back_now);
 		break;
 	case STATE_MENU_ITEM_service:
-		ST7789_WriteString(5, 5, "Сервис", Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 5, "Сервис", Font_16x26, color_text, color_back_now);
 		sprintf(buf,"v_bat: %.2fV",v_bat_filt);
-		ST7789_WriteString(5, 31, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 31, buf, Font_16x26, color_text, color_back_now);
 		sprintf(buf,"adc0: %4i",adc_data[0]);
-		ST7789_WriteString(5, 57, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 57, buf, Font_16x26, color_text, color_back_now);
 		sprintf(buf,"adc1: %4i",adc_data[1]);
-		ST7789_WriteString(5, 83, buf, Font_16x26, color_text, color_back_now);
+		ST7789_PutString(5, 83, buf, Font_16x26, color_text, color_back_now);
 		sprintf(buf,"adc2: %4i",adc_data[2]);
-		ST7789_WriteString(5, 109, buf, Font_16x26, color_text, color_back_now);
-		if(need_reset==0) ST7789_WriteString(5, 135, "Сброс - нет", Font_16x26, color_text, color_back_now);
-		else ST7789_WriteString(5, 135, "Сброс - да ", Font_16x26, color_text, color_back_now);
-		ST7789_WriteString(250, 135, "<-", Font_16x26, color_text,
+		ST7789_PutString(5, 109, buf, Font_16x26, color_text, color_back_now);
+		if(need_reset==0) ST7789_PutString(5, 135, "Сброс - нет", Font_16x26, color_text, color_back_now);
+		else ST7789_PutString(5, 135, "Сброс - да ", Font_16x26, color_text, color_back_now);
+		ST7789_PutString(250, 135, "<-", Font_16x26, color_text,
 						color_back_now);
 		break;
 	}
@@ -1564,7 +1563,7 @@ void ButtonShortPressHandler(void){
 		break;
 	case STATE_MENU:
 		state = menu_index + 2;
-		ST7789_Fill_Color(color_back_now);
+		ST7789_FillScreen(color_back_now);
 		menu_index = 0;
 		break;
 	case STATE_MENU_ITEM_Time:
@@ -1610,12 +1609,12 @@ void ButtonShortPressHandler(void){
 void ButtonLongPressHandler(void){
 	switch (state) {
 	case STATE_MAIN_SCREEN:
-		ST7789_Fill_Color(color_back_now);
+		ST7789_FillScreen(color_back_now);
 		state = STATE_MENU;
 		break;
 
 	case STATE_MENU:
-		ST7789_Fill_Color(color_back_now);
+		ST7789_FillScreen(color_back_now);
 		ST7789_DrawRectangle(290, 10, 310, 50, color_text);
 		ST7789_DrawFilledRectangle(295, 5, 11, 6, color_text);
 		hou_past = Hou + time_change / 60;
@@ -1630,7 +1629,7 @@ void ButtonLongPressHandler(void){
 		state = STATE_MAIN_SCREEN;
 		break;
 	case STATE_MENU_ITEM_Time:
-		ST7789_Fill_Color(color_back_now);
+		ST7789_FillScreen(color_back_now);
 		menu_index=0;
 		sTime.Hours = hou_set;
 		sTime.Minutes = min_set;
@@ -1647,7 +1646,7 @@ void ButtonLongPressHandler(void){
 		state = STATE_MENU;
 		break;
 	case STATE_MENU_ITEM_Date:
-		ST7789_Fill_Color(color_back_now);
+		ST7789_FillScreen(color_back_now);
 		menu_index=0;
 		DateToUpdate.Date=dat_set;
 		DateToUpdate.WeekDay=weekday_set;
@@ -1657,7 +1656,7 @@ void ButtonLongPressHandler(void){
 		state = STATE_MENU;
 		break;
 	case STATE_MENU_ITEM_Alarm:
-		ST7789_Fill_Color(color_back_now);
+		ST7789_FillScreen(color_back_now);
 		menu_index=0;
 		if(alarm_set==1)
 		{
@@ -1680,18 +1679,18 @@ void ButtonLongPressHandler(void){
 		{
 			color_text = color_text_prev;
 			color_back_now = color_back;
-			ST7789_Fill_Color(color_back_now);
+			ST7789_FillScreen(color_back_now);
 			menu_index = 0;
 			state = STATE_MENU;
 		}
 		break;
 	case STATE_MENU_ITEM_Bright:
-		ST7789_Fill_Color(color_back_now);
+		ST7789_FillScreen(color_back_now);
 		menu_index=0;
 		state = STATE_MENU;
 		break;
 	case STATE_MENU_ITEM_auto_off:
-		ST7789_Fill_Color(color_back_now);
+		ST7789_FillScreen(color_back_now);
 		time_set_to_switch_off = time_to_switch_off*1000;
 		menu_index=0;
 		state = STATE_MENU;
@@ -1705,13 +1704,13 @@ void ButtonLongPressHandler(void){
 			if (hou_past >= 24)
 				hou_past -= 24;
 		}
-		ST7789_Fill_Color(color_back_now);
+		ST7789_FillScreen(color_back_now);
 		menu_index = 0;
 		state = STATE_MENU;
 		break;
 	case STATE_MENU_ITEM_service:
 		if(need_reset==1) NVIC_SystemReset();
-		ST7789_Fill_Color(color_back_now);
+		ST7789_FillScreen(color_back_now);
 		menu_index = 0;
 		state = STATE_MENU;
 		break;

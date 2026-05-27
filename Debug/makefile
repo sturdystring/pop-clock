@@ -60,8 +60,8 @@ all: main-build
 main-build: present_cbt6.elf secondary-outputs
 
 # Tool invocations
-present_cbt6.elf present_cbt6.map: $(OBJS) $(USER_OBJS) C:\Users\Root\Desktop\present\STM32F103CBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "present_cbt6.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\Root\Desktop\present\STM32F103CBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="present_cbt6.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+present_cbt6.elf present_cbt6.map: $(OBJS) $(USER_OBJS) D:\ST\pop-clock\STM32F103CBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "present_cbt6.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"D:\ST\pop-clock\STM32F103CBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="present_cbt6.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

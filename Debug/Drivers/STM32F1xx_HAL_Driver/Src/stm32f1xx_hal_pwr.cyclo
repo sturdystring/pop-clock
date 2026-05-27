@@ -14,5 +14,5 @@
 ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c:541:6:HAL_PWR_DisableSleepOnExit	1
 ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c:554:6:HAL_PWR_EnableSEVOnPend	1
 ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c:567:6:HAL_PWR_DisableSEVOnPend	1
-../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c:580:6:HAL_PWR_PVD_IRQHandler	2
 ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c:597:13:HAL_PWR_PVDCallback	1
+../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c:580:6:HAL_PWR_PVD_IRQHandler	2
